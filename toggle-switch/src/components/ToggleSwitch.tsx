@@ -12,69 +12,92 @@ const StyledLabel = styled.label<{ checked: boolean; theme: Theme, disabled: boo
     border-radius: 25px;
     position: relative;
     transition: all 0.3s ease;
-    border: 3px solid ${({ theme, checked, disabled }) => {
-        if (disabled)
-            return theme.colors.secondary;
-
-        return checked ? theme.colors.primary : theme.colors.secondary;
-    }};
 
     &:after {
         content: '';
         position: absolute;
         left: ${({ checked }) => checked ? 'calc(55% - 5px)' : '5px'};
         top: 3px;
-        width: 40px;
-        height: 40px;
+        width: 35px;
+        height: 35px;
         background: ${({ theme, checked, disabled }) => {
-            if (disabled)
-                return theme.colors.background;
+        if (disabled)
+            return theme.colors.background;
 
-            return checked ? theme.colors.primary : theme.colors.secondary;
-        }};
-        border: ${({ disabled, theme }) => disabled ? '2px solid ' + theme.colors.secondary : 'none'};
+        return checked ? theme.colors.primary : theme.colors.secondary;
+    }};
+        
         border-radius: 50%;
         transition: all 0.3s ease;
+    }
+
+    &, &:after {
+        border: 2px solid ${({ theme, checked, disabled }) => {
+        if (disabled)
+            return theme.colors.secondary;
+
+        return checked ? theme.colors.primary : theme.colors.secondary;
+    }};
+    }
+
+    &[disabled] {
+        cursor: not-allowed;
+        opacity: 0.5;
+        pointer-events: none;
     }
 `;
 
 const StyledWrapper = styled.div`
     display: flex;
-    align-items: start;
+    align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 16px;
     flex-direction: column;
     margin: 2rem 0;
 `;
 
+const StyledRow = styled.div`
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+    gap: 8px;
+`;
+
 export default function ToggleSwitch() {
     const [checked, setChecked] = useState(false);
-    const [disabled, setDisabled] = useState(true);
 
     function handleOnChange(e: ChangeEvent<HTMLInputElement>) {
         setChecked(e.target.checked);
     }
 
-    function handleOnDisabled(e: ChangeEvent<HTMLInputElement>) {
-        setDisabled(e.target.checked);
-    }
-
     return (
         <StyledWrapper>
-            <label>
-                <input type="checkbox" name="" onChange={handleOnDisabled} value="Disabled" id="" />
-                <span>Disabled</span>
-            </label>
+            <StyledRow>
+                <h2>Enabled</h2>
+                <StyledLabel htmlFor='checkbox' checked={checked} disabled={false}>
+                    <input
+                        id='checkbox'
+                        type='checkbox'
+                        checked={checked}
+                        onChange={handleOnChange}
+                        disabled={false}
+                    />
+                </StyledLabel>
+            </StyledRow>
 
-            <StyledLabel htmlFor='checkbox' checked={checked} disabled={disabled}>
-                <input
-                    id='checkbox'
-                    type='checkbox'
-                    checked={checked}
-                    onChange={handleOnChange}
-                    disabled={disabled}
-                />
-            </StyledLabel>
+            <StyledRow>
+                <h2>Disabled</h2>
+                <StyledLabel htmlFor='checkbox' checked={checked} disabled={true}>
+                    <input
+                        id='checkboxDisabled'
+                        type='checkbox'
+                        checked={checked}
+                        onChange={handleOnChange}
+                        disabled={true}
+                    />
+                </StyledLabel>
+            </StyledRow>
         </StyledWrapper>
     );
 }
