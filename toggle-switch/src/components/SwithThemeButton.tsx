@@ -36,8 +36,8 @@ export const SwitchThemeButton = ({
     return (
         <StyledButton onClick={toggleTheme}>
             {isDark 
-                ? <LuSun />
-                : <LuMoon />
+                ? <LuMoon />
+                : <LuSun />
             }
         </StyledButton>
     );
